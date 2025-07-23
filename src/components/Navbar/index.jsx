@@ -1,0 +1,22 @@
+export const Navbar = () => {
+    return (
+        <header className="flex bg-green-900 py-4 px-6 text-slate-50">
+            <div>
+                <h1 className="text-5xl">Shop It</h1>
+            </div>
+            <nav className="ml-auto flex gap-4 ">
+                <span class="material-icons-outlined text-3xl">
+                    shopping_cart
+                </span>
+
+                <span class="material-icons-outlined text-3xl">
+                    favorite
+                </span>
+
+                <span class="material-icons-outlined text-3xl">
+                    account_circle
+                </span>
+            </nav>
+        </header>
+    )
+}
