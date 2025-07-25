@@ -1,4 +1,27 @@
+import { useCart } from "../../context/cart-context";
+import { findProductInCart } from "../../utils/findProductInCart";
+import { useNavigate } from "react-router-dom";
+
+
 export const ProductCard = ({ product }) => {
+
+
+    const {cart, cartDispatch } = useCart();
+
+    const navigate = useNavigate();
+
+    const isProductInCart = findProductInCart(cart, product.id)
+
+    const onCartClick = (product) => {
+        !isProductInCart?
+        cartDispatch({
+            type: 'ADD_TO_CART',
+            payload:{ product }
+        }) : navigate('/cart')
+    
+    }
+
+
     return (
         <div className="card card-vertical d-flex direction-column relative shadow">
             <div className="card-image-container">
@@ -6,7 +29,7 @@ export const ProductCard = ({ product }) => {
                     className="card-image"
                     src={product.images[0]}
                     alt={product.title}
-                    referrerPolicy="no-referrer" // Optional: helps with Imgur
+                    referrerPolicy="no-referrer"
                 />
             </div>
             <div className="card-details">
@@ -23,11 +46,16 @@ export const ProductCard = ({ product }) => {
                         </span>
                         Add To Wishlist
                     </button>
-                    <button className="button btn-primary btn-icon cart-btn d-flex align-center justify-center gap cursor btn-margin">
+                    <button onClick={() =>onCartClick(product)} className="button btn-primary btn-icon cart-btn d-flex align-center justify-center gap cursor btn-margin">
                         <span className="material-icons-outlined">
-                            shopping_cart
+                            {
+                                isProductInCart ? 'shopping_cart_checkout' : 'shopping_cart'
+                            }
                         </span>
-                        Add To Cart
+                        {
+                            isProductInCart ? 'Go to Cart' : 'Add To Cart'
+                        }
+                        
                     </button>
                 </div>
             </div>
