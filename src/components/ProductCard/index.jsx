@@ -1,24 +1,33 @@
 import { useCart } from "../../context/cart-context";
 import { findProductInCart } from "../../utils/findProductInCart";
 import { useNavigate } from "react-router-dom";
+import { findProductInWishlist } from "../../utils/findProductInWishlist";
 
 
 export const ProductCard = ({ product }) => {
 
 
-    const {cart, cartDispatch } = useCart();
+    const { cart, wishlist, cartDispatch } = useCart();
 
     const navigate = useNavigate();
 
     const isProductInCart = findProductInCart(cart, product.id)
+    const isProductInWishList = findProductInWishlist(wishlist, product.id)
 
     const onCartClick = (product) => {
-        !isProductInCart?
-        cartDispatch({
-            type: 'ADD_TO_CART',
-            payload:{ product }
-        }) : navigate('/cart')
-    
+        !isProductInCart ?
+            cartDispatch({
+                type: 'ADD_TO_CART',
+                payload: { product }
+            }) : navigate('/cart')
+    }
+
+    const onFavoriteClick = (product) => {
+        !isProductInWishList ?
+            cartDispatch({
+                type: 'ADD_TO_WISHLIST',
+                payload: { product }
+            }) : navigate('/wishlist')
     }
 
 
@@ -40,13 +49,22 @@ export const ProductCard = ({ product }) => {
                     </p>
                 </div>
                 <div className="cta-btn">
-                    <button className="button btn-primary btn-icon cart-btn d-flex align-center justify-center gap cursor btn-margin">
-                        <span className="material-icons-outlined">
-                            favorite
-                        </span>
-                        Add To Wishlist
+                    <button
+                        onClick={() => onFavoriteClick(product)}
+                        className="button btn-primary btn-icon cart-btn d-flex align-center justify-center cursor btn-margin"
+                        style={{ gap: '0.5rem' }} 
+                    >
+                        <div className="d-flex align-center justify-center gap">
+                            <span className="material-icons-outlined">
+                                {isProductInWishList ? 'favorite' : 'favorite_border'}
+                            </span>
+                            <span>
+                                {isProductInWishList ? 'Go to Wishlist' : 'Add To Wishlist'}
+                            </span>
+                        </div>
                     </button>
-                    <button onClick={() =>onCartClick(product)} className="button btn-primary btn-icon cart-btn d-flex align-center justify-center gap cursor btn-margin">
+
+                    <button onClick={() => onCartClick(product)} className="button btn-primary btn-icon cart-btn d-flex align-center justify-center gap cursor btn-margin">
                         <span className="material-icons-outlined">
                             {
                                 isProductInCart ? 'shopping_cart_checkout' : 'shopping_cart'
@@ -55,7 +73,7 @@ export const ProductCard = ({ product }) => {
                         {
                             isProductInCart ? 'Go to Cart' : 'Add To Cart'
                         }
-                        
+
                     </button>
                 </div>
             </div>
