@@ -96,9 +96,9 @@ export const Home = () => {
                     </div>
                 </div>
 
-                {/* Product Grid */}
+                
                 <div className="flex-1">
-                    {/* Category Bar */}
+                    
                     <div className="flex gap-4 justify-center mb-4 flex-wrap">
                         {categories?.length > 0 &&
                             categories.map((category) => (
