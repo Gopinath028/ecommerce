@@ -1,34 +1,46 @@
-export const loginReducer =(state, {type, payload})=>{
-    switch(type){
+export const loginReducer = (state, { type, payload }, action) => {
+  if (!action || !action.type) {
+    console.warn("Invalid action dispatched to loginReducer:", action);
+    return state;
+  }
 
-        case 'EMAIL':
-            return{
-              ...state,
-              email: payload.value 
-            }
+  switch (action.type) {
+    case "SET_LOGIN":
+      return {
+        ...state,
+        email: action.payload.email,
+        password: action.payload.password,
+        token: action.payload.token || "",
+      };
 
-            case 'PASSWORD':
-            return{
-              ...state,
-              password: payload.value 
-            }
+    case 'EMAIL':
+      return {
+        ...state,
+        email: payload.value
+      }
 
-              case 'TOKEN':
-            return{
-              ...state,
-              token: payload.token 
-            }
+    case 'PASSWORD':
+      return {
+        ...state,
+        password: payload.value
+      }
 
-            case "LOGOUT":
-                return{
-                    ...state,
-                    email: '',
-                    password: '',
-                    token: ''
-                }
+    case 'TOKEN':
+      return {
+        ...state,
+        token: action.payload.token
+      }
 
-                
-            default:
-                return state
-    }
+    case "LOGOUT":
+      return {
+        ...state,
+        email: '',
+        password: '',
+        token: ''
+      }
+
+
+    default:
+      return state
+  }
 }
